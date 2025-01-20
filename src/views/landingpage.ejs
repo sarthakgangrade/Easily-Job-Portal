@@ -1,0 +1,148 @@
+<main class="container mt-4" style="height: 95vh;">
+    <div class="container mt-5" style="height: 92vh;"">
+        <div class="jumbotron row align-items-center">
+            <div class="col-md-6">
+                <h1 class="display-4 text-uppercase font-weight-bold mb-4">A comprehensive platform for reliable jobs and internships!</h1>
+                <p id="revealone" class="lead text-muted" style="color: darkkhaki;">Find and apply for your dream jobs.</p>
+                <hr class="my-4 bg-dark">
+                <p class="text fs-5 fw-bold">Get Discovered! Get hired!</p>
+                <a class="btn btn-primary btn-lg mr-3" href="/AllJob" role="button">I am a Job Seeker</a>
+                <%if(username){%> 
+                    <a class="btn btn-primary btn-lg" href="/AllJob" role="button">I am a Recruiter</a>
+                <%}else{%>
+                    <button class="btn btn-primary btn-lg" role="button" type="button" data-toggle="modal" data-target="#registerModal">I am a Recruiter</button>
+                <%}%>
+            </div>
+            <div class="col-md-6">
+                <img class="img-fluid" src='/images/1land.jpg'>
+            </div>
+        </div>
+
+        <!-- Register Modal -->
+        <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <!-- Login form -->
+                        
+                        <form action="/register" method="POST" id="registerForm">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="name" placeholder="name" name="name">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" id="email" placeholder="Email address" name="email">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                            </div>
+                            <% if (errors && errors.length > 0) { %>
+                                <div class="alert alert-danger" role="alert">
+                                    <% errors.forEach(error => { %>
+                                        <p><%= error %></p>
+                                    <% }); %>
+                                </div>
+                            <% } %>
+                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <p class="text-muted">already have an account? <a href="#" data-toggle="modal" data-target="#registerModal" id="loginLink" >Login</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Modal -->
+        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Login form -->
+                        <form action="/login" method="POST">
+                            
+                            <div class="form-group">
+                                <input type="email" class="form-control" id="email" placeholder="Email address" name="email">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <p class="text-muted">don't have an account? <a href="#" data-bs-toggle="modal" data-bs-target="#registerModel" id="registerLink">Register</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bootstrap JS (optional, for modal functionality) -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <script>
+            let textWrapper = document.getElementById("revealone");
+            textWrapper.innerHTML = textWrapper.textContent.replace(
+              /\S/g,
+              "<span class='letter'>$&</span>"
+            );
+          
+            anime
+              .timeline({ loop: true })
+              .add({
+                targets: "#revealone .letter",
+                translateX: [40, 0],
+                translateZ: 0,
+                opacity: [0, 1],
+                easing: "easeOutExpo",
+                duration: 1200,
+                delay: (el, i) => 500 + 30 * i,
+              })
+              .add({
+                targets: "#revealone .letter",
+                translateX: [0, -30],
+                opacity: [1, 0],
+                easing: "easeInExpo",
+                duration: 1100,
+                delay: (el, i) => 100 + 30 * i,
+              });
+          </script>
+          <script>
+            document.getElementById('loginLink').addEventListener('click', function() {
+                $('#registerModal').modal('hide'); 
+                $('#loginModal').modal('show');
+            });
+            document.getElementById('registerLink').addEventListener('click', function() {
+                $('#loginModal').modal('hide'); 
+                $('#registerModal').modal('show');
+            });
+        </script>
+        <% if (errors && errors.length > 0) { %>
+        <script>
+            $(document).ready(function() {
+                $('#registerModal').modal('show');
+                window.history.replaceState({}, document.title, "/");
+            });
+            // function removeRegisterFromURL() {
+            //     window.history.replaceState({}, document.title, "/");
+            //     $('#registerModal').modal('hide');
+            // }
+            
+        </script>
+        <% } %>
+    </div>
+</main>
